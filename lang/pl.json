@@ -1,0 +1,21 @@
+{
+  "DND5EPointBuy": {
+    "MenuLabel": "Kalkulator punktów",
+    "MaxPoints": {
+      "name": "Maksymalna liczba punktów",
+      "hint": "Ile punktów muszą gracze przeznaczyć na cechy postaci?"
+    },
+    "PointCosts": {
+      "name": "Koszty punktów",
+      "label": "Konfiguracja kosztów",
+      "hint": "Dostosuj koszty dla każdego punktu",
+      "title": "Dostosowanie kosztu zakupu punktów",
+      "body": "Zmień (skumulowane) koszty każdej wartości atrybutu"
+    },
+    "Points": "Łączna liczba punktów",
+    "AbilityBase": "Podstawa",
+    "AbilityTotal": "Atrybuty ogółem",
+    "SubmitCalculation": "Zapisz Zmiany",
+    "Reset": "Zresetuj"
+  }
+}
