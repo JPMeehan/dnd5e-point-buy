@@ -86,9 +86,9 @@ class PointBuyCalculator extends api.HandlebarsApplicationMixin(sheets.ActorShee
 
     /** @type {Record<number, number>} */
     const costs = game.settings.get(moduleId, "pointCosts");
-    const scores = Object.keys(costs);
+    const scores = Object.keys(costs).map((i) => Number(i));
     const minScore = scores[0];
-    const maxScore = scores[scores.length];
+    const maxScore = scores[scores.length - 1];
 
     switch (partId) {
       case "header":
