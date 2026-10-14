@@ -12,6 +12,14 @@
       "title": "Point Buy Cost Adjuster",
       "body": "Change the (cumulative) costs of each ability score value"
     },
+    "scoreMax": {
+      "name": "Maximum Ability Score",
+      "hint": "Maximum Ability Score value a player can choose."
+    },
+    "scoreMin": {
+      "name": "Minimum Ability Score",
+      "hint": "Minimum Ability Score value a player can choose."
+    },
     "Points": "Total Points",
     "AbilityBase": "Base",
     "AbilityTotal": "Ability Total",

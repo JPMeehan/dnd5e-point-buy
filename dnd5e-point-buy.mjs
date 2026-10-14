@@ -75,15 +75,20 @@ class PointBuyCalculator extends api.HandlebarsApplicationMixin(sheets.ActorShee
     return context;
   }
 
+
+  async _postRender(context, options) {
+    if ( options.isFirstRender ) this.element.querySelector("input")?.focus();
+  }
+
   /** @override */
   async _preparePartContext(partId, context, options) {
     await super._preparePartContext(partId, context, options);
 
     /** @type {Record<number, number>} */
     const costs = game.settings.get(moduleId, "pointCosts");
-    const scores = Object.keys(costs);
+    const scores = Object.keys(costs).map((i) => Number(i));
     const minScore = scores[0];
-    const maxScore = scores[scores.length];
+    const maxScore = scores[scores.length - 1];
 
     switch (partId) {
       case "header":
@@ -197,6 +202,11 @@ class PointCostMenu extends api.HandlebarsApplicationMixin(api.Application) {
 
   static get defaultCosts() {
     return {
+      3: -9,
+      4: -6,
+      5: -4,
+      6: -2,
+      7: -1,
       8: 0,
       9: 1,
       10: 2,
@@ -204,8 +214,12 @@ class PointCostMenu extends api.HandlebarsApplicationMixin(api.Application) {
       12: 4,
       13: 5,
       14: 7,
-      15: 9
-    }
+      15: 9,
+      16: 12,
+      17: 15,
+      18: 19,
+      19: 23
+    };
   }
 
   static PARTS = {
@@ -263,7 +277,7 @@ class PointCostMenu extends api.HandlebarsApplicationMixin(api.Application) {
    * @param {FormDataExtended} formData Processed data for the submitted form
    */
   static async #onSubmitSetting(event, form, formData) {
-    const data = foundry.utils.expandObject(formData.object).score
+    const data = foundry.utils.expandObject(formData.object).score;
     game.settings.set(moduleId, "pointCosts", data);
   }
 }
@@ -283,21 +297,30 @@ Hooks.once("init", () => {
     default: 27
   });
 
+  game.settings.register(moduleId, "scoreMax", {
+    name: "DND5EPointBuy.MaxScore.name",
+    hint: "DND5EPointBuy.MaxScore.hint",
+    scope: "world",
+    config: true,
+    type: new fields.NumberField({required: true, nullable: false, min: 3, max: 19, integer: true, initial: 15}),
+    default: 15
+  });
+
+  game.settings.register(moduleId, "scoreMin", {
+    name: "DND5EPointBuy.MinScore.name",
+    hint: "DND5EPointBuy.MinScore.hint",
+    scope: "world",
+    config: true,
+    type: new fields.NumberField({required: true, nullable: false, min: 3, max: 19, integer: true, initial: 8})
+  });
+
   const pointField = () => new fields.NumberField({required: true, nullable: false});
 
   game.settings.register(moduleId, "pointCosts", {
     scope: "world",
     config: false,
-    type: new fields.SchemaField({
-      8: pointField(),
-      9: pointField(),
-      10: pointField(),
-      11: pointField(),
-      12: pointField(),
-      13: pointField(),
-      14: pointField(),
-      15: pointField()
-    }),
+    type: new fields.SchemaField(
+      Object.fromEntries(Array.fromRange(17, 3).map((i) => [i, pointField()]))),
     default: PointCostMenu.defaultCosts
   });
 
