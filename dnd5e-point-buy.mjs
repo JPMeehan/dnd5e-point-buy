@@ -75,6 +75,11 @@ class PointBuyCalculator extends api.HandlebarsApplicationMixin(sheets.ActorShee
     return context;
   }
 
+
+  async _postRender(context, options) {
+    if ( options.isFirstRender ) this.element.querySelector("input")?.focus();
+  }
+
   /** @override */
   async _preparePartContext(partId, context, options) {
     await super._preparePartContext(partId, context, options);
